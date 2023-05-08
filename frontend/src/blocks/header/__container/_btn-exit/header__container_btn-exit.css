@@ -1,0 +1,15 @@
+.header__container_btn-exit {
+  background-color: rgba(0, 0, 0, 0);
+  color: #fff;
+  height: min-content;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  margin-top: 51px;
+  cursor: pointer;
+}
+
+.header__container_btn-exit:hover {
+  opacity: .6;
+}

@@ -1,0 +1,11 @@
+.card__like_active {
+  background-image: url(../../../../images/Union.svg);
+  opacity: 1;
+  padding: 0;
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.card__like_active:hover {
+  opacity: 1;
+}

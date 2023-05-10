@@ -3,35 +3,6 @@ import { NavLink } from "react-router-dom";
 
 function Register(props) {
   const {change, submit} = props
-  // const [formValue, setFormValue] = useState({
-  //   email: "",
-  //   password: "",
-  // });
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-
-  //   setFormValue({
-  //     ...formValue,
-  //     [name]: value,
-  //   });
-  // };
-  // console.log(formValue);
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  // auth
-  // .register(formValue)
-  //     .then((res) => console.log(res))
-  //     .catch(
-  //       <InfoTooltip
-  //         text="Что-то пошло не так!
-  //   Попробуйте ещё раз."
-  //         icon="../images/iconFail.svg"
-  //         name="infoTooltip"
-  //       ></InfoTooltip>
-  //     )
-  //     .finally();
-  // };
 
   return (
     <>

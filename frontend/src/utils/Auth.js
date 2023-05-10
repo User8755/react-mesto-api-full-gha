@@ -12,9 +12,10 @@ class Auth {
   }
 
   register(item) {
+    console.log(this._baseUrl);
     return fetch(`${this._baseUrl}/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         password: item.password,
         email: item.email,
@@ -24,8 +25,8 @@ class Auth {
 
   signin(item) {
     return fetch(`${this._baseUrl}/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         password: item.password,
         email: item.email,
@@ -33,16 +34,16 @@ class Auth {
     }).then(this._checkRes);
   }
 
-  tokenValid(token) {
+  tokenValid() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }).then(this._checkRes);
   }
 }
 
-const auth = new Auth("https://auth.nomoreparties.co");
+const auth = new Auth('https://api.mesto.user87.nomoredomains.monster');
 
 export default auth;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
 import "../index.css";
 import Main from "./Main.jsx";
@@ -7,7 +7,6 @@ import PopupWithForm from "./PopupWithForm.js";
 import ImagePopup from "./ImagePopup.js";
 import Register from "./Register.jsx";
 import Login from "./Login .jsx";
-import api from "../utils/Api.js";
 import ProtectedRouteElement from "./ProtectedRoute.jsx";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup.js";
@@ -17,6 +16,7 @@ import InfoTooltip from "./InfoTooltip";
 import auth from "../utils/Auth.js";
 import iconFail from "../images/iconFail.svg";
 import iconSuccess from "../images/iconSuccess.svg";
+import Api from "../utils/Api"
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -35,18 +35,35 @@ function App() {
     icon: "",
   });
 
+  // const api = new Api({
+  //   baseUrl: 'http://api.mesto.user87.nomoredomains.monster',
+  //   headers: {
+  //     Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //     "Content-Type": "application/json",
+  //   },
+  // });
+
+  const api = useMemo(()=> new Api({
+    baseUrl: 'https://api.mesto.user87.nomoredomains.monster',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+      "Content-Type": "application/json",
+    },
+  }), [])
+
+
   useEffect(() => {
-    if (isLogin === true) {
+    if (isLogin) {
       Promise.all([api.userInfoApi(), api.getInitialCards()])
         .then(([userData, serverCard]) => {
           setCurrentUser(userData);
           setCards(serverCard);
         })
         .catch((error) => {
-          console.log(`Код ошибки: ${error}`);
+          console.log(`Код ошибки1: ${error}`);
         });
     }
-  }, [isLogin]);
+  }, [api, isLogin]);
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
@@ -76,7 +93,7 @@ function App() {
   };
 
   const handleCardLike = (card) => {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -149,7 +166,6 @@ function App() {
     auth
       .register(formValue)
       .then(() => {
-        console.log(infoToolTipState);
         setInfoToolTipState({
           ...infoToolTipState,
           isOpen: true,
@@ -178,7 +194,8 @@ function App() {
       .then((res) => {
         if (res) {
           localStorage.setItem("token", res.token);
-          handleLogin();
+          //handleLogin();
+          setLogin(true)
           navigate("/main", { replace: true });
         }
       })
@@ -196,16 +213,16 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       auth
-        .tokenValid(localStorage.getItem("token"))
+        .tokenValid()
         .then((res) => {
-          handleLogin();
-          setUserEmail(res.data.email);
+          //handleLogin();
+          setLogin(true)
+          setUserEmail(res.email);
           navigate("/main", { replace: true });
         })
         .catch((res) => console.log(res));
     }
-  }, []);
-
+  }, [navigate]);
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="root">

@@ -71,12 +71,13 @@ class Api {
   }
 }
 
-const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-58",
-  headers: {
-    authorization: "7c6cea5c-eb7c-4e88-9a77-da060e3d6f29",
-    "Content-Type": "application/json",
-  },
-});
+// const api = new Api({
+//   baseUrl: 'http://api.mesto.user87.nomoredomains.monster',
+//   headers: {
+//     Authorization: `Bearer ${localStorage.getItem('token')}`,
+//     "Content-Type": "application/json",
+//   },
+// });
 
-export default api;
+// export default api;
+export default Api;

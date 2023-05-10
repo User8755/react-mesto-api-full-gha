@@ -12,7 +12,7 @@ function Login(props) {
       </Header>
       <section className="login">
         <h2 className="login__title">Вход</h2>
-        <form className="form" onSubmit={submit}>
+        <form className="form" method='POST' onSubmit={submit}>
           <input
             className="input_type-email input"
             placeholder="Email"

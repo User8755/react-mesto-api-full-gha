@@ -10,6 +10,6 @@
 
 IP-адрес 158.160.3.82
 
-Frontend https://...
+Frontend https://mesto.user87.nomoredomains.monster
 
-Backend https://mesto-user87.nomoredomains.monster
+Backend https://api.mesto.user87.nomoredomains.monster

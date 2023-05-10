@@ -1,13 +1,11 @@
-import logo from "./../images/logo.svg";
+import logo from './../images/logo.svg';
 
 function Header(props) {
-  const {children} = props
+  const { children } = props;
   return (
-    <header className="header">
-      <img src={logo} alt="Логотип сайта" className="header__logo" />
+    <header className='header'>
+      <img src={logo} alt='Логотип сайта' className='header__logo' />
       {children}
-      
-      
     </header>
   );
 }

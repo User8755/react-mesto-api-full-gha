@@ -1,22 +1,22 @@
-import { useEffect, useMemo, useState } from "react";
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
-import "../index.css";
-import Main from "./Main.jsx";
-import Footer from "./Footer.js";
-import PopupWithForm from "./PopupWithForm.js";
-import ImagePopup from "./ImagePopup.js";
-import Register from "./Register.jsx";
-import Login from "./Login .jsx";
-import ProtectedRouteElement from "./ProtectedRoute.jsx";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-import EditProfilePopup from "./EditProfilePopup.js";
-import EditAvatarPopup from "./EditAvatarPopup.jsx";
-import AddPlacePopup from "./AddPlacePopup.jsx";
-import InfoTooltip from "./InfoTooltip";
-import auth from "../utils/Auth.js";
-import iconFail from "../images/iconFail.svg";
-import iconSuccess from "../images/iconSuccess.svg";
-import Api from "../utils/Api"
+import { useEffect, useMemo, useState } from 'react';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import '../index.css';
+import Main from './Main.jsx';
+import Footer from './Footer.js';
+import PopupWithForm from './PopupWithForm.js';
+import ImagePopup from './ImagePopup.js';
+import Register from './Register.jsx';
+import Login from './Login .jsx';
+import ProtectedRouteElement from './ProtectedRoute.jsx';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.jsx';
+import AddPlacePopup from './AddPlacePopup.jsx';
+import InfoTooltip from './InfoTooltip';
+import auth from '../utils/Auth.js';
+import iconFail from '../images/iconFail.svg';
+import iconSuccess from '../images/iconSuccess.svg';
+import Api from '../utils/Api';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -26,13 +26,13 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [cards, setCards] = useState([]);
   const [isLogin, setLogin] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState('');
 
   const navigate = useNavigate();
   const [infoToolTipState, setInfoToolTipState] = useState({
     isOpen: false,
-    text: "",
-    icon: "",
+    text: '',
+    icon: '',
   });
 
   // const api = new Api({
@@ -43,14 +43,17 @@ function App() {
   //   },
   // });
 
-  const api = useMemo(()=> new Api({
-    baseUrl: 'https://api.mesto.user87.nomoredomains.monster',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-      "Content-Type": "application/json",
-    },
-  }), [])
-
+  const api = useMemo(
+    () =>
+      new Api({
+        baseUrl: 'https://api.mesto.user87.nomoredomains.monster',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+        },
+      }),
+    []
+  );
 
   useEffect(() => {
     if (isLogin) {
@@ -148,8 +151,8 @@ function App() {
   };
 
   const [formValue, setFormValue] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const handleChange = (e) => {
@@ -170,17 +173,17 @@ function App() {
           ...infoToolTipState,
           isOpen: true,
 
-          text: "Вы успешно зарегистрировались!",
+          text: 'Вы успешно зарегистрировались!',
           icon: iconSuccess,
         });
-        navigate("/sign-in", { replace: true });
+        navigate('/sign-in', { replace: true });
       })
       .catch((res) => {
         console.log();
         setInfoToolTipState({
           ...infoToolTipState,
           isOpen: true,
-          text: "Что-то пошло не так! Попробуйте ещё раз.",
+          text: 'Что-то пошло не так! Попробуйте ещё раз.',
           icon: iconFail,
         });
         console.log(res);
@@ -193,17 +196,17 @@ function App() {
       .signin(formValue)
       .then((res) => {
         if (res) {
-          localStorage.setItem("token", res.token);
+          localStorage.setItem('token', res.token);
           //handleLogin();
-          setLogin(true)
-          navigate("/main", { replace: true });
+          setLogin(true);
+          navigate('/main', { replace: true });
         }
       })
       .catch((res) => {
         setInfoToolTipState({
           ...infoToolTipState,
           isOpen: true,
-          text: "Что-то пошло не так! Попробуйте ещё раз.",
+          text: 'Что-то пошло не так! Попробуйте ещё раз.',
           icon: iconFail,
         });
         console.log(res);
@@ -211,25 +214,25 @@ function App() {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
+    if (localStorage.getItem('token')) {
       auth
         .tokenValid()
         .then((res) => {
           //handleLogin();
-          setLogin(true)
+          setLogin(true);
           setUserEmail(res.email);
-          navigate("/main", { replace: true });
+          navigate('/main', { replace: true });
         })
         .catch((res) => console.log(res));
     }
   }, [navigate]);
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="root">
-        <div className="page">
+      <div className='root'>
+        <div className='page'>
           <Routes>
             <Route
-              path="/main"
+              path='/main'
               element={
                 <ProtectedRouteElement
                   loggedIn={isLogin}
@@ -246,24 +249,24 @@ function App() {
               }
             />
             <Route
-              path="/sign-in"
+              path='/sign-in'
               element={
                 <Login change={handleChange} submit={handleSubmitSignin} />
               }
             />
             <Route
-              path="/sign-up"
+              path='/sign-up'
               element={
                 <Register change={handleChange} submit={handleSubmitRegister} />
               }
             />
             <Route
-              path="/"
+              path='/'
               element={
                 handleLogin ? (
-                  <Navigate to="/sign-in" replace />
+                  <Navigate to='/sign-in' replace />
                 ) : (
-                  <Navigate to="/main" replace />
+                  <Navigate to='/main' replace />
                 )
               }
             />
@@ -280,9 +283,9 @@ function App() {
             onAddPlace={handleAddPlaceSubmit}
           ></AddPlacePopup>
           <PopupWithForm
-            name="delete"
-            title="Вы уверены?"
-            buttonText="Да"
+            name='delete'
+            title='Вы уверены?'
+            buttonText='Да'
           ></PopupWithForm>
           <EditAvatarPopup
             isOpen={isEditAvatarPopupOpen}
@@ -292,7 +295,7 @@ function App() {
           <InfoTooltip
             infoToolTipState={infoToolTipState}
             onClose={closeAllPopups}
-            name={"infoTooltip"}
+            name={'infoTooltip'}
           ></InfoTooltip>
           <ImagePopup card={selectedCard} onClose={handleCardClick} />
         </div>

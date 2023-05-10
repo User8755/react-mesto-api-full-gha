@@ -1,11 +1,11 @@
-import PopupWithForm from "./PopupWithForm.js";
-import { useState, useContext, useEffect } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import PopupWithForm from './PopupWithForm.js';
+import { useState, useContext, useEffect } from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function EditProfilePopup(props) {
   const { isOpen, onClose } = props;
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
 
   const currentUser = useContext(CurrentUserContext);
 
@@ -35,45 +35,45 @@ function EditProfilePopup(props) {
     <PopupWithForm
       isOpen={isOpen}
       onClose={onClose}
-      name="profile"
-      title="Редактировать профиль"
-      buttonText="Сохранить"
+      name='profile'
+      title='Редактировать профиль'
+      buttonText='Сохранить'
       onSubmit={handleSubmit}
     >
-      <fieldset className="popup__fieldset">
+      <fieldset className='popup__fieldset'>
         <input
-          id="input-name"
-          type="text"
-          name="profilename"
-          placeholder="Имя"
-          className="popup__input popup__input_type_name"
+          id='input-name'
+          type='text'
+          name='profilename'
+          placeholder='Имя'
+          className='popup__input popup__input_type_name'
           required
-          minLength="2"
-          maxLength="20"
-          value={name || ""}
+          minLength='2'
+          maxLength='20'
+          value={name || ''}
           onChange={handleChangeName}
         />
-        <span className="popup__span input-name-error"></span>
+        <span className='popup__span input-name-error'></span>
         <input
-          id="input-work"
-          type="text"
-          name="profilework"
-          placeholder="Работа"
-          className="popup__input popup__input_type_work"
+          id='input-work'
+          type='text'
+          name='profilework'
+          placeholder='Работа'
+          className='popup__input popup__input_type_work'
           required
-          minLength="2"
-          maxLength="200"
-          value={description || ""}
+          minLength='2'
+          maxLength='200'
+          value={description || ''}
           onChange={handleChangeDescription}
         />
-        <span className="popup__span input-work-error"></span>
+        <span className='popup__span input-work-error'></span>
       </fieldset>
       <button
-            className="popup__btn-save popup__btn-save-disable button"
-            type="submit"
-          >
-            Сохранить
-          </button>
+        className='popup__btn-save popup__btn-save-disable button'
+        type='submit'
+      >
+        Сохранить
+      </button>
     </PopupWithForm>
   );
 }

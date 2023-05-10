@@ -1,5 +1,5 @@
-import PopupWithForm from "./PopupWithForm.js";
-import { useRef, useEffect } from "react";
+import PopupWithForm from './PopupWithForm.js';
+import { useRef, useEffect } from 'react';
 
 function EditAvatarPopup(props) {
   const { isOpen, onClose, onUpdateAvatar } = props;
@@ -14,36 +14,36 @@ function EditAvatarPopup(props) {
   }
 
   useEffect(() => {
-    avatar.current.value = "";
+    avatar.current.value = '';
   }, [isOpen]);
 
   return (
     <PopupWithForm
       isOpen={isOpen}
       onClose={onClose}
-      name="avatar"
-      title="Обновить аватар"
-      buttonText="Сохранить"
+      name='avatar'
+      title='Обновить аватар'
+      buttonText='Сохранить'
       onSubmit={handleSubmit}
     >
-      <fieldset className="popup__fieldset">
+      <fieldset className='popup__fieldset'>
         <input
-          id="input-url-avtar"
-          type="url"
-          name="urlAvatar"
-          placeholder="Ссылка на картинку"
-          className="popup__input popup__input_type_url-avatar"
+          id='input-url-avtar'
+          type='url'
+          name='urlAvatar'
+          placeholder='Ссылка на картинку'
+          className='popup__input popup__input_type_url-avatar'
           required
           ref={avatar}
         />
-        <span className="popup__span input-url-avtar-error"></span>
+        <span className='popup__span input-url-avtar-error'></span>
       </fieldset>
       <button
-            className="popup__btn-save popup__btn-save-disable button"
-            type="submit"
-          >
-            Сохранить
-          </button>
+        className='popup__btn-save popup__btn-save-disable button'
+        type='submit'
+      >
+        Сохранить
+      </button>
     </PopupWithForm>
   );
 }

@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
+import { useContext } from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function Card(props) {
   const { card, onCardClick, onCardLike, onCardDelete } = props;
@@ -7,7 +7,7 @@ function Card(props) {
   const isOwn = card.owner === currentUser._id;
   const isLiked = card.likes.some((i) => i === currentUser._id);
   const cardLikeButtonClassName = `card__like ${
-    isLiked && "card__like_active"
+    isLiked && 'card__like_active'
   }`;
   const handleLikeClick = () => {
     onCardLike(card);
@@ -17,28 +17,28 @@ function Card(props) {
   };
 
   return (
-    <article className="card">
+    <article className='card'>
       {isOwn && (
         <button
-          className="card__btn-delete"
+          className='card__btn-delete'
           onClick={handleDeleteClick}
         ></button>
       )}
       <img
         src={card.link}
         alt={card.name}
-        className="card__img"
+        className='card__img'
         onClick={() => onCardClick(card)}
       />
-      <div className="card__description">
-        <h3 className="card__title">{card.name}</h3>
-        <div className="card__block">
+      <div className='card__description'>
+        <h3 className='card__title'>{card.name}</h3>
+        <div className='card__block'>
           <button
-            type="button"
+            type='button'
             className={cardLikeButtonClassName}
             onClick={() => handleLikeClick()}
           ></button>
-          <span className="card__span">{card.likes.length}</span>
+          <span className='card__span'>{card.likes.length}</span>
         </div>
       </div>
     </article>

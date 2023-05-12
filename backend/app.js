@@ -79,4 +79,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log('Сервер запущен');
+  console.log(process.env.NODE_ENV);
 });

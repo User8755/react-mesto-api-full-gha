@@ -12,22 +12,31 @@ class Api {
     }
   }
 
-  getInitialCards() {
+  getInitialCards(jwt) {
     return fetch(`${this._baseUrl}/cards`, {
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
     }).then(this._checkRes);
   }
 
-  userInfoApi() {
+  userInfoApi(jwt) {
     return fetch(`${this._baseUrl}/users/me`, {
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
     }).then(this._checkRes);
   }
 
-  updateUserInfo(item) {
+  updateUserInfo(item, jwt) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
       body: JSON.stringify({
         name: item.name,
         about: item.about,
@@ -35,10 +44,13 @@ class Api {
     }).then(this._checkRes);
   }
 
-  loadImg(item) {
+  loadImg(item, jwt) {
     return fetch(`${this._baseUrl}/cards`, {
       method: 'POST',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
       body: JSON.stringify({
         name: item.name.current.value,
         link: item.link.current.value,
@@ -46,38 +58,45 @@ class Api {
     }).then(this._checkRes);
   }
 
-  deleteCards(cardId) {
+  deleteCards(cardId, jwt) {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
     }).then(this._checkRes);
   }
 
-  loadAvatar(link) {
+  loadAvatar(link, jwt) {
     return fetch(`${this._baseUrl}/users/me/avatar`, {
       method: 'PATCH',
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
       body: JSON.stringify({
         avatar: link.avatar.current.value,
       }),
     }).then(this._checkRes);
   }
 
-  changeLikeCardStatus(cardId, isLiked) {
+  changeLikeCardStatus(cardId, isLiked, jwt) {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: `${isLiked ? 'PUT' : 'DELETE'}`,
-      headers: this._headers,
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+        ...this._headers,
+      },
     }).then(this._checkRes);
   }
 }
 
-// const api = new Api({
-//   baseUrl: 'http://api.mesto.user87.nomoredomains.monster',
-//   headers: {
-//     Authorization: `Bearer ${localStorage.getItem('token')}`,
-//     "Content-Type": "application/json",
-//   },
-// });
+const api = new Api({
+  baseUrl: 'https://api.mesto.user87.nomoredomains.monster',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
-// export default api;
-export default Api;
+export default api;

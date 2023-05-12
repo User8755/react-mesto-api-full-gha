@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 import '../index.css';
 import Main from './Main.jsx';
@@ -16,7 +16,7 @@ import InfoTooltip from './InfoTooltip';
 import auth from '../utils/Auth.js';
 import iconFail from '../images/iconFail.svg';
 import iconSuccess from '../images/iconSuccess.svg';
-import Api from '../utils/Api';
+import api from '../utils/Api';
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] = useState(false);
@@ -35,29 +35,24 @@ function App() {
     icon: '',
   });
 
-  // const api = new Api({
-  //   baseUrl: 'http://api.mesto.user87.nomoredomains.monster',
-  //   headers: {
-  //     Authorization: `Bearer ${localStorage.getItem('token')}`,
-  //     "Content-Type": "application/json",
-  //   },
-  // });
+  const jwt = localStorage.getItem('token');
 
-  const api = useMemo(
-    () =>
-      new Api({
-        baseUrl: 'https://api.mesto.user87.nomoredomains.monster',
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
-        },
-      }),
-    []
-  );
+  useEffect(() => {
+    if (jwt) {
+      auth
+        .tokenValid()
+        .then((res) => {
+          setLogin(true);
+          setUserEmail(res.email);
+          navigate('/main', { replace: true });
+        })
+        .catch((res) => console.log(res));
+    }
+  }, [jwt, navigate]);
 
   useEffect(() => {
     if (isLogin) {
-      Promise.all([api.userInfoApi(), api.getInitialCards()])
+      Promise.all([api.userInfoApi(jwt), api.getInitialCards(jwt)])
         .then(([userData, serverCard]) => {
           setCurrentUser(userData);
           setCards(serverCard);
@@ -66,7 +61,7 @@ function App() {
           console.log(`Код ошибки1: ${error}`);
         });
     }
-  }, [api, isLogin]);
+  }, [isLogin, jwt]);
 
   const handleCardClick = (card) => {
     setSelectedCard(card);
@@ -98,7 +93,7 @@ function App() {
   const handleCardLike = (card) => {
     const isLiked = card.likes.some((i) => i === currentUser._id);
     api
-      .changeLikeCardStatus(card._id, !isLiked)
+      .changeLikeCardStatus(card._id, !isLiked, jwt)
       .then((newCard) => {
         setCards((state) =>
           state.map((c) => (c._id === card._id ? newCard : c))
@@ -111,7 +106,7 @@ function App() {
 
   const handleCardDelete = (card) => {
     api
-      .deleteCards(card._id)
+      .deleteCards(card._id, jwt)
       .then(setCards((res) => res.filter((item) => item._id !== card._id)))
       .catch((error) => {
         console.log(`Код ошибки: ${error}`);
@@ -120,7 +115,7 @@ function App() {
 
   const handleUpdateUser = (profileData) => {
     api
-      .updateUserInfo(profileData)
+      .updateUserInfo(profileData, jwt)
       .then((res) => {
         setCurrentUser(res);
       })
@@ -132,7 +127,7 @@ function App() {
 
   const handleUpdateAvatar = (item) => {
     api
-      .loadAvatar(item)
+      .loadAvatar(item, jwt)
       .then((res) => setCurrentUser(res))
       .catch((error) => {
         console.log(`Код ошибки: ${error}`);
@@ -142,7 +137,7 @@ function App() {
 
   const handleAddPlaceSubmit = (item) => {
     api
-      .loadImg(item)
+      .loadImg(item, jwt)
       .then((serverCard) => setCards([serverCard, ...cards]))
       .catch((error) => {
         console.log(`Код ошибки: ${error}`);
@@ -179,7 +174,6 @@ function App() {
         navigate('/sign-in', { replace: true });
       })
       .catch((res) => {
-        console.log();
         setInfoToolTipState({
           ...infoToolTipState,
           isOpen: true,
@@ -196,9 +190,8 @@ function App() {
       .signin(formValue)
       .then((res) => {
         if (res) {
+          handleLogin();
           localStorage.setItem('token', res.token);
-          //handleLogin();
-          setLogin(true);
           navigate('/main', { replace: true });
         }
       })
@@ -213,19 +206,6 @@ function App() {
       });
   };
 
-  useEffect(() => {
-    if (localStorage.getItem('token')) {
-      auth
-        .tokenValid()
-        .then((res) => {
-          //handleLogin();
-          setLogin(true);
-          setUserEmail(res.email);
-          navigate('/main', { replace: true });
-        })
-        .catch((res) => console.log(res));
-    }
-  }, [navigate]);
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='root'>
